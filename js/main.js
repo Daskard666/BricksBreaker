@@ -35,7 +35,37 @@ function drawGameField() {
     context.beginPath();
     context.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
     context.fill();
+
+    if (ballY + ballRadius > fieldY + size) {
+        isBallMoving = false;
+
+        context.fillStyle = '#ff0000';
+        context.font = 'bold 32px Arial';
+        context.textAlign = 'center';
+        context.fillText('Вы проиграли!', canvas.width / 2, canvas.height / 2);
+
+        context.fillStyle = '#000000';
+        context.fillRect(canvas.width / 2 - 100, canvas.height / 2 + 50, 200, 50);
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'center';
+        context.fillText('Начать заново', canvas.width / 2, canvas.height / 2 + 80);
+
+        canvas.addEventListener('click', restartGame);
+    }
 }
+
+function restartGame() {
+    canvas.removeEventListener('click', restartGame);
+    setInitialPosition();
+    isBallMoving = true;
+
+    ballSpeedX = initialBallSpeedX;
+    ballSpeedY = initialBallSpeedY;
+
+    gameLoop();
+}
+
 
 function handleKeyDown(event) {
     if (event.key === 'ArrowLeft') {
