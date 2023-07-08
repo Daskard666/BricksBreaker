@@ -2,10 +2,12 @@ const canvas = document.getElementById('game-canvas');
 const context = canvas.getContext('2d');
 
 let platformX = 0;
-const platformSpeed = 10;
+const platformSpeed = 4;
 let size, fieldX, fieldY, platformWidth, platformHeight;
 let ballX, ballY, ballRadius, ballSpeedX, ballSpeedY;
 let isBallMoving = false;
+let leftArrowPressed = false;
+let rightArrowPressed = false;
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -37,19 +39,19 @@ function drawGameField() {
 
 function handleKeyDown(event) {
     if (event.key === 'ArrowLeft') {
-        platformX -= platformSpeed;
-        if (platformX < fieldX) {
-            platformX = fieldX;
-        }
+        leftArrowPressed = true;
     } else if (event.key === 'ArrowRight') {
-        const fieldWidth = size;
-        if (platformX + platformWidth + platformSpeed > fieldX + fieldWidth) {
-            platformX = fieldX + fieldWidth - platformWidth;
-        } else {
-            platformX += platformSpeed;
-        }
+        rightArrowPressed = true;
     } else if (event.key === ' ') {
         isBallMoving = true;
+    }
+}
+
+function handleKeyUp(event) {
+    if (event.key === 'ArrowLeft') {
+        leftArrowPressed = false;
+    } else if (event.key === 'ArrowRight') {
+        rightArrowPressed = false;
     }
 }
 
@@ -68,6 +70,22 @@ function setInitialPosition() {
     ballY = platformY - 20;
     ballSpeedX = Math.random() * 4 - 1;
     ballSpeedY = -2.5;
+}
+
+function updatePlatformPosition() {
+    if (leftArrowPressed) {
+        platformX -= platformSpeed;
+        if (platformX < fieldX) {
+            platformX = fieldX;
+        }
+    } else if (rightArrowPressed) {
+        const fieldWidth = size;
+        if (platformX + platformWidth + platformSpeed > fieldX + fieldWidth) {
+            platformX = fieldX + fieldWidth - platformWidth;
+        } else {
+            platformX += platformSpeed;
+        }
+    }
 }
 
 function updateBallPosition() {
@@ -115,8 +133,10 @@ window.addEventListener('load', function() {
 });
 
 window.addEventListener('keydown', handleKeyDown);
+window.addEventListener('keyup', handleKeyUp);
 
 function gameLoop() {
+    updatePlatformPosition();
     updateBallPosition();
     drawGameField();
     requestAnimationFrame(gameLoop);
