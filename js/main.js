@@ -15,6 +15,14 @@ function drawGameField() {
 
     context.fillStyle = '#c0c0c0';
     context.fillRect(fieldX, fieldY, size, size);
+
+    const platformWidth = 120;
+    const platformHeight = 10;
+    const platformX = (canvas.width - platformWidth) / 2;
+    const platformY = fieldY + size - platformHeight - 10
+
+    context.fillStyle = '#000000';
+    context.fillRect(platformX, platformY, platformWidth, platformHeight);
 }
 
 window.addEventListener('resize', function() {
