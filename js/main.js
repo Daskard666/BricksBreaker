@@ -6,6 +6,7 @@ const platformSpeed = 4;
 let size, fieldX, fieldY, platformWidth, platformHeight;
 let ballX, ballY, ballRadius, ballSpeedX, ballSpeedY;
 let isBallMoving = false;
+let isGameOver = false;
 let leftArrowPressed = false;
 let rightArrowPressed = false;
 
@@ -38,6 +39,7 @@ function drawGameField() {
 
     if (ballY + ballRadius > fieldY + size) {
         isBallMoving = false;
+        isGameOver = true; // Установка флага, что игра окончена
 
         context.fillStyle = '#ff0000';
         context.font = 'bold 32px Arial';
@@ -58,30 +60,31 @@ function drawGameField() {
 function restartGame() {
     canvas.removeEventListener('click', restartGame);
     setInitialPosition();
-    isBallMoving = true;
-
-    ballSpeedX = initialBallSpeedX;
-    ballSpeedY = initialBallSpeedY;
+    isBallMoving = false;
+    isGameOver = false;
 
     gameLoop();
 }
 
-
 function handleKeyDown(event) {
-    if (event.key === 'ArrowLeft') {
-        leftArrowPressed = true;
-    } else if (event.key === 'ArrowRight') {
-        rightArrowPressed = true;
-    } else if (event.key === ' ') {
-        isBallMoving = true;
+    if (!isGameOver) {
+        if (event.key === 'ArrowLeft') {
+            leftArrowPressed = true;
+        } else if (event.key === 'ArrowRight') {
+            rightArrowPressed = true;
+        } else if (event.key === ' ') {
+            isBallMoving = true;
+        }
     }
 }
 
 function handleKeyUp(event) {
-    if (event.key === 'ArrowLeft') {
-        leftArrowPressed = false;
-    } else if (event.key === 'ArrowRight') {
-        rightArrowPressed = false;
+    if (!isGameOver) {
+        if (event.key === 'ArrowLeft') {
+            leftArrowPressed = false;
+        } else if (event.key === 'ArrowRight') {
+            rightArrowPressed = false;
+        }
     }
 }
 
@@ -103,6 +106,10 @@ function setInitialPosition() {
 }
 
 function updatePlatformPosition() {
+    if (!isBallMoving || isGameOver) {
+        return;
+    }
+
     if (leftArrowPressed) {
         platformX -= platformSpeed;
         if (platformX < fieldX) {
@@ -119,7 +126,7 @@ function updatePlatformPosition() {
 }
 
 function updateBallPosition() {
-    if (!isBallMoving) {
+    if (!isBallMoving || isGameOver) {
         return;
     }
 
