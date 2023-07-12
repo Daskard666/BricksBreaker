@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fbad83d6-b219-4bb5-8436-7d177c337845" name="Default Changelist" comment="">
+    <list default="true" id="fbad83d6-b219-4bb5-8436-7d177c337845" name="Default Changelist" comment="notMovingPlatform">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
     </list>
@@ -37,7 +37,21 @@
       <option name="presentableId" value="Default" />
       <updated>1688813190583</updated>
       <workItem from="1688813192623" duration="14010000" />
+      <workItem from="1688841745218" duration="77000" />
+      <workItem from="1688927724365" duration="704000" />
+      <workItem from="1689010775737" duration="3206000" />
+      <workItem from="1689080700989" duration="1706000" />
+      <workItem from="1689084686036" duration="110000" />
+      <workItem from="1689084807892" duration="1465000" />
     </task>
+    <task id="LOCAL-00001" summary="notMovingPlatform">
+      <created>1689011394263</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1689011394263</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -53,5 +67,10 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="notMovingPlatform" />
+    <option name="LAST_COMMIT_MESSAGE" value="notMovingPlatform" />
   </component>
 </project>
