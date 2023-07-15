@@ -189,7 +189,14 @@ function updateBallPosition() {
         ballX + ballRadius > platformLeft &&
         ballX - ballRadius < platformRight
     ) {
+        const collisionPoint = ballX - (platformX + platformWidth / 2);
+        
+        const normalizedCollisionPoint = collisionPoint / (platformWidth / 2);
+
         ballSpeedY *= -1;
+        ballSpeedX = normalizedCollisionPoint * 2.5;
+
+        ballSpeedX += Math.random() * 0.2 - 0.1;
     }
 
     if (ballY + ballRadius > fieldY + size) {
