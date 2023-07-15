@@ -9,6 +9,8 @@ let isBallMoving = false;
 let isGameOver = false;
 let leftArrowPressed = false;
 let rightArrowPressed = false;
+let isSpacePressed = false;
+let originalBallSpeedX, originalBallSpeedY;
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -56,17 +58,20 @@ function drawBall() {
 }
 
 function drawGameOverScreen() {
+    context.fillStyle = 'rgba(192, 192, 192, 0.5)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
     context.fillStyle = '#ff0000';
-    context.font = 'bold 32px Arial';
+    context.font = 'bold 48px Arial';
     context.textAlign = 'center';
     context.fillText('Вы проиграли!', canvas.width / 2, canvas.height / 2);
 
     context.fillStyle = '#000000';
-    context.fillRect(canvas.width / 2 - 100, canvas.height / 2 + 50, 200, 50);
+    context.fillRect(canvas.width / 2 - 150, canvas.height / 2 + 50, 300, 80);
     context.fillStyle = '#ffffff';
-    context.font = 'bold 16px Arial';
+    context.font = 'bold 24px Arial';
     context.textAlign = 'center';
-    context.fillText('Начать заново', canvas.width / 2, canvas.height / 2 + 80);
+    context.fillText('Начать заново', canvas.width / 2, canvas.height / 2 + 100);
 }
 
 function handleClick(event) {
@@ -74,10 +79,10 @@ function handleClick(event) {
         const clickX = event.clientX;
         const clickY = event.clientY;
 
-        const buttonX = canvas.width / 2 - 100;
+        const buttonX = canvas.width / 2 - 150;
         const buttonY = canvas.height / 2 + 50;
-        const buttonWidth = 200;
-        const buttonHeight = 50;
+        const buttonWidth = 300;
+        const buttonHeight = 80;
 
         if (
             clickX > buttonX &&
@@ -102,16 +107,23 @@ function restartGame() {
     gameLoop();
 }
 
+let ballNormalSpeedX = 2;
+let ballNormalSpeedY = -2.5;
+
 function handleKeyDown(event) {
     if (!isGameOver) {
         if (event.key === 'ArrowLeft') {
             leftArrowPressed = true;
         } else if (event.key === 'ArrowRight') {
             rightArrowPressed = true;
-        } else if (event.key === ' ') {
-            if (!isBallMoving) {
-                isBallMoving = true;
-                requestAnimationFrame(gameLoop);
+        } else if (event.key === 'Enter' && !isBallMoving) {
+            isBallMoving = true;
+            requestAnimationFrame(gameLoop);
+        } else if (event.key === ' ' && !isSpacePressed) {
+            isSpacePressed = true;
+            if (isBallMoving) {
+                ballSpeedX *= 2;
+                ballSpeedY *= 2;
             }
         }
     }
@@ -123,6 +135,12 @@ function handleKeyUp(event) {
             leftArrowPressed = false;
         } else if (event.key === 'ArrowRight') {
             rightArrowPressed = false;
+        } else if (event.key === ' ') {
+            isSpacePressed = false;
+            if (isBallMoving) {
+                ballSpeedX = originalBallSpeedX;
+                ballSpeedY = originalBallSpeedY;
+            }
         }
     }
 }
@@ -142,6 +160,8 @@ function setInitialPosition() {
     ballY = platformY - 20;
     ballSpeedX = Math.random() * 4 - 1;
     ballSpeedY = -2.5;
+    originalBallSpeedX = ballSpeedX;
+    originalBallSpeedY = ballSpeedY;
 }
 
 function updatePlatformPosition() {
@@ -190,7 +210,6 @@ function updateBallPosition() {
         ballX - ballRadius < platformRight
     ) {
         const collisionPoint = ballX - (platformX + platformWidth / 2);
-        
         const normalizedCollisionPoint = collisionPoint / (platformWidth / 2);
 
         ballSpeedY *= -1;
